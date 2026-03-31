@@ -1,27 +1,27 @@
 {
   "photos": [
     {
-      "filename": "/assets/voyance/image_tarot.jpg",
+      "filename": "assets/voyance/image_tarot.jpg",
       "category": "voyance",
       "caption": "Séance de tirage de tarot"
     },
     {
-      "filename": "/assets/voyance/image_oracle.jpg",
+      "filename": "assets/voyance/image_oracle.jpg",
       "category": "voyance",
       "caption": "Oracles intuitifs"
     },
     {
-      "filename": "/assets/meditation/meditation_01.jpg",
+      "filename": "assets/meditation/meditation_01.jpg",
       "category": "meditation",
       "caption": "Atelier de groupe"
     },
     {
-      "filename": "/assets/energie/image_pendules.jpg",
+      "filename": "assets/energie/image_pendules.jpg",
       "category": "energie",
       "caption": "Soin Lahochi"
     },
     {
-      "filename": "/assets/voyance/image_tarot2.jpg",
+      "filename": "assets/voyance/image_tarot2.jpg",
       "category": "voyance",
       "caption": "Contact avec l'au-delà"
     }

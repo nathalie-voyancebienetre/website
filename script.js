@@ -258,46 +258,6 @@ function updateGalleryInfo() {
     info.textContent = `$${filteredPhotos} photo$${filteredPhotos > 1 ? 's' : ''} affichée${filteredPhotos > 1 ? 's' : ''}`;
 }
 
-// ============================================
-// LIGHTBOX (inchangé)
-// ============================================
-function setupLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    const closeBtn = document.querySelector('.close-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const img = item.querySelector('img');
-            lightboxImg.src = img.src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-    
-    closeBtn?.addEventListener('click', () => {
-        lightbox.classList.remove('active');
-        lightboxImg.src = '';
-        document.body.style.overflow = '';
-    });
-    
-    lightbox?.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            lightbox.classList.remove('active');
-            lightboxImg.src = '';
-            document.body.style.overflow = '';
-        }
-    });
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
-            lightbox.classList.remove('active');
-            lightboxImg.src = '';
-            document.body.style.overflow = '';
-        }
-    });
-}
 
 async function loadDiplomas() {
     try {
