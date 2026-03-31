@@ -1,11 +1,31 @@
 {
   "photos": [
-    "image_livres.jpg",
-    "image_oracle.jpg",
-    "image_pendules.jpg",
-    "image_pendules2.jpg",
-    "image_roue_spirituel.jpg",
-    "image_wallpaper.jpg",
-    "image_lames.jpg"
-  ]
+    {
+      "filename": "/assets/voyance/image_tarot.jpg",
+      "category": "voyance",
+      "caption": "Séance de tirage de tarot"
+    },
+    {
+      "filename": "/assets/voyance/image_oracle.jpg",
+      "category": "voyance",
+      "caption": "Oracles intuitifs"
+    },
+    {
+      "filename": "/assets/meditation/meditation_01.jpg",
+      "category": "meditation",
+      "caption": "Atelier de groupe"
+    },
+    {
+      "filename": "/assets/energie/image_pendules.jpg",
+      "category": "energie",
+      "caption": "Soin Lahochi"
+    },
+    {
+      "filename": "/assets/voyance/image_tarot2.jpg",
+      "category": "voyance",
+      "caption": "Contact avec l'au-delà"
+    }
+  ],
+  "categories": ["tous", "voyance", "meditation", "energie", "ateliers"],
+  "photosPerPage": 6
 }

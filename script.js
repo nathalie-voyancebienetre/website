@@ -113,54 +113,154 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// FONCTIONS DE CHARGEMENT
+// GESTION DE GALERIE AVANCÉE
 // ============================================
+
+let galleryData = null;
+let currentCategory = 'tous';
+let currentPage = 1;
+let photosPerPage = 6;
+
 async function loadGallery() {
     try {
         const response = await fetch('gallery.json');
-        const data = await response.json();
-        const grid = document.getElementById('gallery-grid');
-        const last10 = data.photos.slice(-10);
+        galleryData = await response.json();
+        photosPerPage = galleryData.photosPerPage || 6;
         
-        last10.forEach(filename => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="assets/${filename}" alt="${filename}" loading="lazy" class="gallery-img">
-                <div class="overlay" aria-hidden="true"></div>
-            `;
-            grid.appendChild(item);
-        });
-        
-        setupLightbox();
+        renderGallery();
+        setupFilterButtons();
+        updateGalleryInfo();
     } catch (error) {
         console.warn('Galerie non configurée:', error);
+        document.getElementById('gallery-grid').innerHTML = 
+            '<p class="no-photos">Aucune photo disponible pour le moment.</p>';
     }
 }
 
-async function loadDiplomas() {
-    try {
-        const response = await fetch('diplomes.json');
-        const data = await response.json();
-        const grid = document.getElementById('diplomes-grid');
-        
-        data.diplomas.forEach((filename, index) => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="assets/Diplomes/${filename}" alt="Diplôme ${index + 1}" loading="lazy" class="gallery-img">
-                <div class="overlay" aria-hidden="true">
-                    <span class="overlay-text">📜</span>
-                </div>
-            `;
-            grid.appendChild(item);
-        });
-        
-        setupLightbox();
-    } catch (error) {
-        console.warn('Diplômes non configurés:', error);
+function renderGallery() {
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = '';
+    
+    // Filtrer les photos par catégorie
+    const filteredPhotos = currentCategory === 'tous' 
+        ? galleryData.photos 
+        : galleryData.photos.filter(photo => photo.category === currentCategory);
+    
+    // Pagination
+    const startIndex = (currentPage - 1) * photosPerPage;
+    const endIndex = startIndex + photosPerPage;
+    const paginatedPhotos = filteredPhotos.slice(startIndex, endIndex);
+    
+    if (paginatedPhotos.length === 0) {
+        grid.innerHTML = '<p class="no-photos">Aucune photo dans cette catégorie.</p>';
+        document.getElementById('pagination').innerHTML = '';
+        return;
     }
+    
+    // Créer les éléments de galerie
+    paginatedPhotos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item fade-in';
+        item.dataset.index = startIndex + index;
+        item.innerHTML = `
+            <img src="assets/${photo.filename}" 
+                 alt="${photo.caption || photo.filename}" 
+                 loading="lazy" 
+                 class="gallery-img">
+            <div class="overlay" aria-hidden="true"></div>
+            $${photo.caption ? `<div class="photo-caption">$${photo.caption}</div>` : ''}
+        `;
+        grid.appendChild(item);
+    });
+    
+    setupLightbox();
+    renderPagination(filteredPhotos.length);
 }
+
+function setupFilterButtons() {
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Mise à jour de l'état actif
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Changement de catégorie
+            currentCategory = btn.dataset.category;
+            currentPage = 1;
+            
+            // Animation de transition
+            const grid = document.getElementById('gallery-grid');
+            grid.style.opacity = '0';
+            
+            setTimeout(() => {
+                renderGallery();
+                grid.style.opacity = '1';
+            }, 300);
+        });
+    });
+}
+
+function renderPagination(totalPhotos) {
+    const pagination = document.getElementById('pagination');
+    const totalPages = Math.ceil(totalPhotos / photosPerPage);
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    let html = '<div class="pagination-buttons">';
+    
+    // Bouton précédent
+    if (currentPage > 1) {
+        html += `<button class="page-btn prev" data-page="${currentPage - 1}">← Précédent</button>`;
+    }
+    
+    // Numéros de page
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+            html += `<button class="page-btn active">${i}</button>`;
+        } else {
+            html += `<button class="page-btn" data-page="$${i}">$${i}</button>`;
+        }
+    }
+    
+    // Bouton suivant
+    if (currentPage < totalPages) {
+        html += `<button class="page-btn next" data-page="${currentPage + 1}">Suivant →</button>`;
+    }
+    
+    html += '</div>';
+    pagination.innerHTML = html;
+    
+    // Événements de pagination
+    document.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const page = parseInt(btn.dataset.page);
+            if (page && page !== currentPage) {
+                currentPage = page;
+                renderGallery();
+                // Scroll vers la galerie
+                document.getElementById('galerie').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+}
+
+function updateGalleryInfo() {
+    const info = document.getElementById('gallery-info');
+    const filteredPhotos = currentCategory === 'tous' 
+        ? galleryData.photos.length 
+        : galleryData.photos.filter(p => p.category === currentCategory).length;
+    
+    info.textContent = `$${filteredPhotos} photo$${filteredPhotos > 1 ? 's' : ''} affichée${filteredPhotos > 1 ? 's' : ''}`;
+}
+
+// ============================================
+// LIGHTBOX 
+// ============================================
 
 function setupLightbox() {
     const lightbox = document.getElementById('lightbox');
