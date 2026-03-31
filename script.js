@@ -259,6 +259,71 @@ function updateGalleryInfo() {
 }
 
 // ============================================
+// LIGHTBOX (inchangé)
+// ============================================
+function setupLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    closeBtn?.addEventListener('click', () => {
+        lightbox.classList.remove('active');
+        lightboxImg.src = '';
+        document.body.style.overflow = '';
+    });
+    
+    lightbox?.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.classList.remove('active');
+            lightboxImg.src = '';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+            lightbox.classList.remove('active');
+            lightboxImg.src = '';
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+async function loadDiplomas() {
+    try {
+        const response = await fetch('diplomes.json');
+        const data = await response.json();
+        const grid = document.getElementById('diplomes-grid');
+        
+        data.diplomas.forEach((filename, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="assets/Diplomes/${filename}" alt="Diplôme ${index + 1}" loading="lazy" class="gallery-img">
+                <div class="overlay" aria-hidden="true">
+                    <span class="overlay-text">📜</span>
+                </div>
+            `;
+            grid.appendChild(item);
+        });
+        
+        setupLightbox();
+    } catch (error) {
+        console.warn('Diplômes non configurés:', error);
+    }
+}
+
+// ============================================
 // LIGHTBOX 
 // ============================================
 
