@@ -1185,3 +1185,116 @@ body.light-mode #diplomes .gallery-item::after {
     }
 }
 
+/* ============================================
+   BOUTON "CHARGER PLUS"
+   ============================================ */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.load-more-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.load-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+}
+
+.load-more-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.load-more-btn .btn-count {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-weight: 400;
+}
+
+.load-more-btn .btn-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.load-more-btn:hover .btn-arrow {
+    transform: translateY(3px);
+}
+
+/* ============================================
+   INFO GALERIE
+   ============================================ */
+.gallery-info {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.no-photos {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 40px;
+    font-style: italic;
+}
+
+/* Animation fade-in */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Caption sur les photos */
+.photo-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 20px 15px 15px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .photo-caption {
+    opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .load-more-btn {
+        padding: 12px 30px;
+        font-size: 0.95rem;
+    }
+    
+    .photo-caption {
+        font-size: 0.8rem;
+        padding: 15px 12px 12px;
+    }
+}

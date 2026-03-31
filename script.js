@@ -113,14 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// GESTION DE GALERIE AVANCÉE
+// VARIABLES GLOBALES DE GALERIE
 // ============================================
-
 let galleryData = null;
-let currentCategory = 'tous';
 let currentPage = 1;
 let photosPerPage = 6;
+let visibleCount = 12; // Nombre initial de photos visibles
 
+// ============================================
+// CHARGEMENT DE LA GALERIE
+// ============================================
 async function loadGallery() {
     try {
         const response = await fetch('gallery.json');
@@ -128,7 +130,6 @@ async function loadGallery() {
         photosPerPage = galleryData.photosPerPage || 6;
         
         renderGallery();
-        setupFilterButtons();
         updateGalleryInfo();
     } catch (error) {
         console.warn('Galerie non configurée:', error);
@@ -137,31 +138,27 @@ async function loadGallery() {
     }
 }
 
+// ============================================
+// AFFICHAGE DES PHOTOS
+// ============================================
 function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     grid.innerHTML = '';
     
-    // Filtrer les photos par catégorie
-    const filteredPhotos = currentCategory === 'tous' 
-        ? galleryData.photos 
-        : galleryData.photos.filter(photo => photo.category === currentCategory);
-    
-    // Pagination
-    const startIndex = (currentPage - 1) * photosPerPage;
-    const endIndex = startIndex + photosPerPage;
-    const paginatedPhotos = filteredPhotos.slice(startIndex, endIndex);
-    
-    if (paginatedPhotos.length === 0) {
-        grid.innerHTML = '<p class="no-photos">Aucune photo dans cette catégorie.</p>';
-        document.getElementById('pagination').innerHTML = '';
+    // Vérifier si les données existent
+    if (!galleryData || !galleryData.photos || galleryData.photos.length === 0) {
+        grid.innerHTML = '<p class="no-photos">Aucune photo disponible.</p>';
         return;
     }
     
+    // Sélectionner les photos à afficher
+    const photosToShow = galleryData.photos.slice(0, visibleCount);
+    
     // Créer les éléments de galerie
-    paginatedPhotos.forEach((photo, index) => {
+    photosToShow.forEach((photo, index) => {
         const item = document.createElement('div');
         item.className = 'gallery-item fade-in';
-        item.dataset.index = startIndex + index;
+        item.dataset.index = index;
         item.innerHTML = `
             <img src="assets/${photo.filename}" 
                  alt="${photo.caption || photo.filename}" 
@@ -174,91 +171,83 @@ function renderGallery() {
     });
     
     setupLightbox();
-    renderPagination(filteredPhotos.length);
+    renderLoadMoreButton();
+    updateGalleryInfo();
 }
 
-function setupFilterButtons() {
-    const buttons = document.querySelectorAll('.filter-btn');
+// ============================================
+// BOUTON "CHARGER PLUS"
+// ============================================
+function renderLoadMoreButton() {
+    const grid = document.getElementById('gallery-grid');
+    const existingBtn = document.getElementById('load-more-btn');
+    if (existingBtn) existingBtn.remove();
     
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Mise à jour de l'état actif
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // Changement de catégorie
-            currentCategory = btn.dataset.category;
-            currentPage = 1;
-            
-            // Animation de transition
-            const grid = document.getElementById('gallery-grid');
-            grid.style.opacity = '0';
-            
-            setTimeout(() => {
-                renderGallery();
-                grid.style.opacity = '1';
-            }, 300);
-        });
-    });
-}
-
-function renderPagination(totalPhotos) {
-    const pagination = document.getElementById('pagination');
-    const totalPages = Math.ceil(totalPhotos / photosPerPage);
-    
-    if (totalPages <= 1) {
-        pagination.innerHTML = '';
+    // Si toutes les photos sont visibles, masquer le bouton
+    if (visibleCount >= galleryData.photos.length) {
         return;
     }
     
-    let html = '<div class="pagination-buttons">';
+    const remaining = galleryData.photos.length - visibleCount;
     
-    // Bouton précédent
-    if (currentPage > 1) {
-        html += `<button class="page-btn prev" data-page="${currentPage - 1}">← Précédent</button>`;
-    }
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'load-more-container';
+    btnContainer.innerHTML = `
+        <button id="load-more-btn" class="load-more-btn">
+            <span class="btn-text">Voir plus de photos</span>
+            <span class="btn-count">(${remaining} restantes)</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </button>
+    `;
     
-    // Numéros de page
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === currentPage) {
-            html += `<button class="page-btn active">${i}</button>`;
-        } else {
-            html += `<button class="page-btn" data-page="$${i}">$${i}</button>`;
-        }
-    }
+    grid.parentNode.insertBefore(btnContainer, grid.nextSibling);
     
-    // Bouton suivant
-    if (currentPage < totalPages) {
-        html += `<button class="page-btn next" data-page="${currentPage + 1}">Suivant →</button>`;
-    }
-    
-    html += '</div>';
-    pagination.innerHTML = html;
-    
-    // Événements de pagination
-    document.querySelectorAll('.page-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const page = parseInt(btn.dataset.page);
-            if (page && page !== currentPage) {
-                currentPage = page;
-                renderGallery();
-                // Scroll vers la galerie
-                document.getElementById('galerie').scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    loadMoreBtn.addEventListener('click', () => {
+        // Animation de chargement
+        loadMoreBtn.classList.add('loading');
+        loadMoreBtn.querySelector('.btn-text').textContent = 'Chargement...';
+        
+        // Petit délai pour simuler le chargement (peut être supprimé)
+        setTimeout(() => {
+            visibleCount += photosPerPage;
+            loadMoreBtn.classList.remove('loading');
+            loadMoreBtn.querySelector('.btn-text').textContent = 'Voir plus de photos';
+            renderGallery();
+        }, 300);
     });
 }
 
+// ============================================
+// MISE À JOUR DES INFOS GALERIE
+// ============================================
 function updateGalleryInfo() {
-    const info = document.getElementById('gallery-info');
-    const filteredPhotos = currentCategory === 'tous' 
-        ? galleryData.photos.length 
-        : galleryData.photos.filter(p => p.category === currentCategory).length;
+    let info = document.getElementById('gallery-info');
+    if (!info) {
+        info = document.createElement('p');
+        info.id = 'gallery-info';
+        info.className = 'gallery-info';
+        const gallerySection = document.getElementById('galerie');
+        gallerySection.appendChild(info);
+    }
     
-    info.textContent = `$${filteredPhotos} photo$${filteredPhotos > 1 ? 's' : ''} affichée${filteredPhotos > 1 ? 's' : ''}`;
+    const totalPhotos = galleryData.photos.length;
+    const displayedCount = Math.min(visibleCount, totalPhotos);
+    
+    let infoText = `$${displayedCount} photo$${displayedCount > 1 ? 's' : ''} affichée${displayedCount > 1 ? 's' : ''}`;
+    
+    if (displayedCount < totalPhotos) {
+        infoText += ` sur $${totalPhotos} totale$${totalPhotos > 1 ? 's' : ''}`;
+    }
+    
+    info.textContent = infoText;
 }
 
-
+// ============================================
+// CHARGEMENT DES DIPLÔMES
+// ============================================
 async function loadDiplomas() {
     try {
         const response = await fetch('diplomes.json');
@@ -284,9 +273,8 @@ async function loadDiplomas() {
 }
 
 // ============================================
-// LIGHTBOX 
+// LIGHTBOX
 // ============================================
-
 function setupLightbox() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
@@ -326,54 +314,8 @@ function setupLightbox() {
 }
 
 // ============================================
-// ENVOI DE FORMULAIRE DE CONTACT
+// EMAILJS CONFIGURATION
 // ============================================
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const formStatus = document.getElementById('form-status');
-    
-    // Remplace par tes identifiants EmailJS
-    const EMAILJS_PUBLIC_KEY = 'TON_PUBLIC_KEY';
-    const EMAILJS_SERVICE_ID = 'TON_SERVICE_ID';
-    const EMAILJS_TEMPLATE_ID = 'TON_TEMPLATE_ID';
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Désactiver le bouton pendant l'envoi
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Envoi en cours...';
-            formStatus.textContent = '';
-            formStatus.style.color = 'var(--text-secondary)';
-            
-            try {
-                // Récupérer les données du formulaire
-                const formData = {
-                    nom: document.getElementById('nom').value,
-                    email: document.getElementById('email').value,
-                    message: document.getElementById('message').value
-                };
-                
-                // Envoyer via EmailJS
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formData, EMAILJS_PUBLIC_KEY);
-                
-                // Succès
-                formStatus.textContent = '✅ Message envoyé avec succès !';
-                formStatus.style.color = '#10B981';
-                contactForm.reset();
-                
-            } catch (error) {
-                // Erreur
-                console.error('Erreur d\'envoi:', error);
-                formStatus.textContent = '❌ Erreur lors de l\'envoi. Veuillez réessayer.';
-                formStatus.style.color = '#EF4444';
-            } finally {
-                // Réactiver le bouton
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Envoyer';
-            }
-        });
-    }
-});
+const EMAILJS_PUBLIC_KEY = 'TON_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID = 'TON_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'TON_TEMPLATE_ID';
