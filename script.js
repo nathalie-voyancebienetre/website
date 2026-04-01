@@ -116,9 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // VARIABLES GLOBALES DE GALERIE
 // ============================================
 let galleryData = null;
+let currentCategory = 'tous';
 let currentPage = 1;
-let photosPerPage = 6;
-let visibleCount = 12; // Nombre initial de photos visibles
+const photosPerPage = 6; // Nombre d'images par page
+const thresholdForMoreButton = 10; // Seuil pour afficher le bouton "+"
 
 // ============================================
 // CHARGEMENT DE LA GALERIE
@@ -127,98 +128,155 @@ async function loadGallery() {
     try {
         const response = await fetch('gallery.json');
         galleryData = await response.json();
-        photosPerPage = galleryData.photosPerPage || 6;
+        
+        // Initialiser les filtres
+        setupFilters();
         
         renderGallery();
         updateGalleryInfo();
     } catch (error) {
         console.warn('Galerie non configurée:', error);
-        document.getElementById('gallery-grid').innerHTML = 
-            '<p class="no-photos">Aucune photo disponible pour le moment.</p>';
+        const grid = document.getElementById('gallery-grid');
+        if(grid) {
+            grid.innerHTML = '<p class="no-photos">Aucune photo disponible pour le moment.</p>';
+        }
     }
 }
 
 // ============================================
-// AFFICHAGE DES PHOTOS
+// GESTION DES FILTRES DE CATÉGORIES
+// ============================================
+function setupFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Mise à jour de l'état actif des boutons
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Changement de catégorie et réaffichage
+            currentCategory = btn.dataset.category;
+            currentPage = 1; // Reset à la première page lors du changement de filtre
+            renderGallery();
+            updateGalleryInfo();
+        });
+    });
+}
+
+// ============================================
+// AFFICHAGE DES PHOTOS (AVEC FILTRE ET PAGINATION)
 // ============================================
 function renderGallery() {
     const grid = document.getElementById('gallery-grid');
     grid.innerHTML = '';
     
-    // Vérifier si les données existent
     if (!galleryData || !galleryData.photos || galleryData.photos.length === 0) {
         grid.innerHTML = '<p class="no-photos">Aucune photo disponible.</p>';
+        removeLoadMoreButton();
         return;
     }
     
-    // Sélectionner les photos à afficher
-    const photosToShow = galleryData.photos.slice(0, visibleCount);
+    // 1. Filtrer les photos selon la catégorie sélectionnée
+    let filteredPhotos = galleryData.photos;
+    if (currentCategory !== 'tous') {
+        filteredPhotos = galleryData.photos.filter(photo => photo.category === currentCategory);
+    }
     
-    // Créer les éléments de galerie
+    if (filteredPhotos.length === 0) {
+        grid.innerHTML = '<p class="no-photos">Aucune photo dans cette catégorie.</p>';
+        removeLoadMoreButton();
+        return;
+    }
+    
+    // 2. Calculer les photos à afficher (pagination)
+    const startIndex = 0;
+    const endIndex = Math.min(currentPage * photosPerPage, filteredPhotos.length);
+    const photosToShow = filteredPhotos.slice(startIndex, endIndex);
+    
+    // 3. Générer le HTML
     photosToShow.forEach((photo, index) => {
         const item = document.createElement('div');
         item.className = 'gallery-item fade-in';
         item.dataset.index = index;
+        
+        // Construction de l'image avec caption
+        const captionHtml = photo.caption 
+            ? `<div class="photo-caption">${photo.caption}</div>` 
+            : '';
+            
         item.innerHTML = `
-            <img src="assets/${photo.filename}" 
+            <img src="${photo.filename}" 
                  alt="${photo.caption || photo.filename}" 
                  loading="lazy" 
                  class="gallery-img">
             <div class="overlay" aria-hidden="true"></div>
-            $${photo.caption ? `<div class="photo-caption">$${photo.caption}</div>` : ''}
+            ${captionHtml}
         `;
         grid.appendChild(item);
     });
     
+    // 4. Configurer la Lightbox et le bouton "Voir plus"
     setupLightbox();
-    renderLoadMoreButton();
-    updateGalleryInfo();
+    
+    // Logique d'affichage du bouton "+"
+    if (endIndex < filteredPhotos.length) {
+        renderLoadMoreButton(filteredPhotos.length);
+    } else {
+        removeLoadMoreButton();
+    }
 }
 
 // ============================================
-// BOUTON "CHARGER PLUS"
+// BOUTON "VOIR PLUS" (+)
 // ============================================
-function renderLoadMoreButton() {
+function renderLoadMoreButton(totalFiltered) {
+    // Supprimer l'ancien bouton s'il existe
+    removeLoadMoreButton();
+    
     const grid = document.getElementById('gallery-grid');
-    const existingBtn = document.getElementById('load-more-btn');
-    if (existingBtn) existingBtn.remove();
+    const container = document.createElement('div');
+    container.className = 'load-more-container';
     
-    // Si toutes les photos sont visibles, masquer le bouton
-    if (visibleCount >= galleryData.photos.length) {
-        return;
-    }
+    // Calcul du nombre restant
+    const currentDisplayed = grid.querySelectorAll('.gallery-item').length;
+    const remaining = totalFiltered - currentDisplayed;
     
-    const remaining = galleryData.photos.length - visibleCount;
-    
-    const btnContainer = document.createElement('div');
-    btnContainer.className = 'load-more-container';
-    btnContainer.innerHTML = `
-        <button id="load-more-btn" class="load-more-btn">
-            <span class="btn-text">Voir plus de photos</span>
-            <span class="btn-count">(${remaining} restantes)</span>
-            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6"/>
-            </svg>
-        </button>
-    `;
-    
-    grid.parentNode.insertBefore(btnContainer, grid.nextSibling);
-    
-    const loadMoreBtn = document.getElementById('load-more-btn');
-    loadMoreBtn.addEventListener('click', () => {
-        // Animation de chargement
-        loadMoreBtn.classList.add('loading');
-        loadMoreBtn.querySelector('.btn-text').textContent = 'Chargement...';
+    // On n'affiche le bouton que si le total filtré dépasse le seuil (ex: 10)
+    // OU simplement s'il reste des images à charger
+    if (remaining > 0) {
+        container.innerHTML = `
+            <button id="load-more-btn" class="load-more-btn">
+                <span class="btn-text">+</span>
+                <span class="btn-count">Voir $${remaining} autre$${remaining > 1 ? 's' : ''}</span>
+            </button>
+        `;
         
-        // Petit délai pour simuler le chargement (peut être supprimé)
-        setTimeout(() => {
-            visibleCount += photosPerPage;
-            loadMoreBtn.classList.remove('loading');
-            loadMoreBtn.querySelector('.btn-text').textContent = 'Voir plus de photos';
-            renderGallery();
-        }, 300);
-    });
+        grid.parentNode.insertBefore(container, grid.nextSibling);
+        
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        loadMoreBtn.addEventListener('click', () => {
+            loadMoreBtn.classList.add('loading');
+            loadMoreBtn.querySelector('.btn-text').textContent = '...';
+            
+            // Petit délai pour simuler le chargement (optionnel)
+            setTimeout(() => {
+                currentPage++;
+                loadMoreBtn.classList.remove('loading');
+                renderGallery(); // Réafficher avec la nouvelle page
+                updateGalleryInfo();
+            }, 300);
+        });
+    }
 }
+
+function removeLoadMoreButton() {
+    const existingBtn = document.getElementById('load-more-btn');
+    if (existingBtn) {
+        existingBtn.parentElement.remove();
+    }
+}
+
 
 // ============================================
 // MISE À JOUR DES INFOS GALERIE
@@ -230,20 +288,33 @@ function updateGalleryInfo() {
         info.id = 'gallery-info';
         info.className = 'gallery-info';
         const gallerySection = document.getElementById('galerie');
-        gallerySection.appendChild(info);
+        if(gallerySection) gallerySection.appendChild(info);
     }
     
-    const totalPhotos = galleryData.photos.length;
-    const displayedCount = Math.min(visibleCount, totalPhotos);
+    if (!galleryData || !galleryData.photos) {
+        info.textContent = '';
+        return;
+    }
+
+    let filteredPhotos = galleryData.photos;
+    if (currentCategory !== 'tous') {
+        filteredPhotos = galleryData.photos.filter(photo => photo.category === currentCategory);
+    }
+    
+    const totalPhotos = filteredPhotos.length;
+    const displayedCount = document.querySelectorAll('.gallery-item').length;
     
     let infoText = `$${displayedCount} photo$${displayedCount > 1 ? 's' : ''} affichée${displayedCount > 1 ? 's' : ''}`;
     
     if (displayedCount < totalPhotos) {
         infoText += ` sur $${totalPhotos} totale$${totalPhotos > 1 ? 's' : ''}`;
+    } else if (totalPhotos > 0) {
+        infoText += ` (${totalPhotos} au total)`;
     }
     
     info.textContent = infoText;
 }
+
 
 // ============================================
 // CHARGEMENT DES DIPLÔMES
