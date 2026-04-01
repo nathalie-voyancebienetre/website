@@ -30,15 +30,25 @@
       "category": "energie",
       "caption": "energie"
     },
-        {
+    {
       "filename": "assets/energie/image_pendules2.jpg",
       "category": "energie",
       "caption": "energie"
     },
-        {
+    {
       "filename": "assets/energie/image_roue_spirituel.jpg",
       "category": "energie",
       "caption": "energie"
+    },
+    {
+      "filename": "assets/atelier/image_livres.jpg",
+      "category": "ateliers",
+      "caption": "ateliers"
+    },
+    {
+      "filename": "assets/meditation/image_meditation.jpg",
+      "category": "meditation",
+      "caption": "meditation"
     }
 
 
