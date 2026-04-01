@@ -118,8 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let galleryData = null;
 let currentCategory = 'tous';
 let currentPage = 1;
-const photosPerPage = 6; // Nombre d'images par page
-const thresholdForMoreButton = 10; // Seuil pour afficher le bouton "+"
+const photosPerPage = 6;
 
 // ============================================
 // CHARGEMENT DE LA GALERIE
@@ -129,9 +128,7 @@ async function loadGallery() {
         const response = await fetch('gallery.json');
         galleryData = await response.json();
         
-        // Initialiser les filtres
         setupFilters();
-        
         renderGallery();
         updateGalleryInfo();
     } catch (error) {
@@ -151,13 +148,11 @@ function setupFilters() {
     
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Mise à jour de l'état actif des boutons
             filterButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            // Changement de catégorie et réaffichage
             currentCategory = btn.dataset.category;
-            currentPage = 1; // Reset à la première page lors du changement de filtre
+            currentPage = 1;
             renderGallery();
             updateGalleryInfo();
         });
@@ -165,7 +160,7 @@ function setupFilters() {
 }
 
 // ============================================
-// AFFICHAGE DES PHOTOS (AVEC FILTRE ET PAGINATION)
+// AFFICHAGE DES PHOTOS
 // ============================================
 function renderGallery() {
     const grid = document.getElementById('gallery-grid');
@@ -177,7 +172,6 @@ function renderGallery() {
         return;
     }
     
-    // 1. Filtrer les photos selon la catégorie sélectionnée
     let filteredPhotos = galleryData.photos;
     if (currentCategory !== 'tous') {
         filteredPhotos = galleryData.photos.filter(photo => photo.category === currentCategory);
@@ -189,37 +183,31 @@ function renderGallery() {
         return;
     }
     
-    // 2. Calculer les photos à afficher (pagination)
     const startIndex = 0;
     const endIndex = Math.min(currentPage * photosPerPage, filteredPhotos.length);
     const photosToShow = filteredPhotos.slice(startIndex, endIndex);
     
-    // 3. Générer le HTML
     photosToShow.forEach((photo, index) => {
         const item = document.createElement('div');
         item.className = 'gallery-item fade-in';
         item.dataset.index = index;
         
-        // Construction de l'image avec caption
         const captionHtml = photo.caption 
-            ? `<div class="photo-caption">${photo.caption}</div>` 
+            ? '<div class="photo-caption">' + photo.caption + '</div>' 
             : '';
             
-        item.innerHTML = `
-            <img src="${photo.filename}" 
-                 alt="${photo.caption || photo.filename}" 
-                 loading="lazy" 
-                 class="gallery-img">
-            <div class="overlay" aria-hidden="true"></div>
-            ${captionHtml}
-        `;
+        item.innerHTML = 
+            '<img src="' + photo.filename + '" ' +
+            'alt="' + (photo.caption || photo.filename) + '" ' +
+            'loading="lazy" class="gallery-img">' +
+            '<div class="overlay" aria-hidden="true"></div>' +
+            captionHtml;
+        
         grid.appendChild(item);
     });
     
-    // 4. Configurer la Lightbox et le bouton "Voir plus"
     setupLightbox();
     
-    // Logique d'affichage du bouton "+"
     if (endIndex < filteredPhotos.length) {
         renderLoadMoreButton(filteredPhotos.length);
     } else {
@@ -231,26 +219,24 @@ function renderGallery() {
 // BOUTON "VOIR PLUS" (+)
 // ============================================
 function renderLoadMoreButton(totalFiltered) {
-    // Supprimer l'ancien bouton s'il existe
     removeLoadMoreButton();
     
     const grid = document.getElementById('gallery-grid');
     const container = document.createElement('div');
     container.className = 'load-more-container';
     
-    // Calcul du nombre restant
     const currentDisplayed = grid.querySelectorAll('.gallery-item').length;
     const remaining = totalFiltered - currentDisplayed;
     
-    // On n'affiche le bouton que si le total filtré dépasse le seuil (ex: 10)
-    // OU simplement s'il reste des images à charger
     if (remaining > 0) {
-        container.innerHTML = `
-            <button id="load-more-btn" class="load-more-btn">
-                <span class="btn-text">+</span>
-                <span class="btn-count">Voir $${remaining} autre$${remaining > 1 ? 's' : ''}</span>
-            </button>
-        `;
+        const btnText = '+';
+        const btnCount = 'Voir ' + remaining + ' autre' + (remaining > 1 ? 's' : '');
+        
+        container.innerHTML = 
+            '<button id="load-more-btn" class="load-more-btn">' +
+            '<span class="btn-text">' + btnText + '</span>' +
+            '<span class="btn-count">' + btnCount + '</span>' +
+            '</button>';
         
         grid.parentNode.insertBefore(container, grid.nextSibling);
         
@@ -259,11 +245,10 @@ function renderLoadMoreButton(totalFiltered) {
             loadMoreBtn.classList.add('loading');
             loadMoreBtn.querySelector('.btn-text').textContent = '...';
             
-            // Petit délai pour simuler le chargement (optionnel)
             setTimeout(() => {
                 currentPage++;
                 loadMoreBtn.classList.remove('loading');
-                renderGallery(); // Réafficher avec la nouvelle page
+                renderGallery();
                 updateGalleryInfo();
             }, 300);
         });
@@ -276,7 +261,6 @@ function removeLoadMoreButton() {
         existingBtn.parentElement.remove();
     }
 }
-
 
 // ============================================
 // MISE À JOUR DES INFOS GALERIE
@@ -304,17 +288,16 @@ function updateGalleryInfo() {
     const totalPhotos = filteredPhotos.length;
     const displayedCount = document.querySelectorAll('.gallery-item').length;
     
-    let infoText = `$${displayedCount} photo$${displayedCount > 1 ? 's' : ''} affichée${displayedCount > 1 ? 's' : ''}`;
+    let infoText = displayedCount + ' photo' + (displayedCount > 1 ? 's' : '') + ' affichée' + (displayedCount > 1 ? 's' : '');
     
     if (displayedCount < totalPhotos) {
-        infoText += ` sur $${totalPhotos} totale$${totalPhotos > 1 ? 's' : ''}`;
+        infoText += ' sur ' + totalPhotos + ' totale' + (totalPhotos > 1 ? 's' : '');
     } else if (totalPhotos > 0) {
-        infoText += ` (${totalPhotos} au total)`;
+        infoText += ' (' + totalPhotos + ' au total)';
     }
     
     info.textContent = infoText;
 }
-
 
 // ============================================
 // CHARGEMENT DES DIPLÔMES
@@ -324,16 +307,19 @@ async function loadDiplomas() {
         const response = await fetch('diplomes.json');
         const data = await response.json();
         const grid = document.getElementById('diplomes-grid');
+        if(!grid) return;
         
+        grid.innerHTML = '';
         data.diplomas.forEach((filename, index) => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="assets/Diplomes/${filename}" alt="Diplôme ${index + 1}" loading="lazy" class="gallery-img">
-                <div class="overlay" aria-hidden="true">
-                    <span class="overlay-text">📜</span>
-                </div>
-            `;
+            item.innerHTML = 
+                '<img src="assets/Diplomes/' + filename + '" ' +
+                'alt="Diplôme ' + (index + 1) + '" ' +
+                'loading="lazy" class="gallery-img">' +
+                '<div class="overlay" aria-hidden="true">' +
+                '<span class="overlay-text">📜</span>' +
+                '</div>';
             grid.appendChild(item);
         });
         
@@ -355,9 +341,11 @@ function setupLightbox() {
     galleryItems.forEach(item => {
         item.addEventListener('click', () => {
             const img = item.querySelector('img');
-            lightboxImg.src = img.src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            if(img) {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         });
     });
     
