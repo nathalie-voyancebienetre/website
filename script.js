@@ -371,10 +371,3 @@ function setupLightbox() {
         }
     });
 }
-
-// ============================================
-// EMAILJS CONFIGURATION
-// ============================================
-const EMAILJS_PUBLIC_KEY = 'TON_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID = 'TON_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'TON_TEMPLATE_ID';
