@@ -1429,3 +1429,74 @@ body.light-mode .profile-photo:hover {
         height: 180px;
     }
 }
+
+/* ============================================
+   SECTION CONTACT - MISES À JOUR
+   ============================================ */
+
+/* Mise en avant du téléphone */
+.contact-item.highlight {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(16, 185, 129, 0.1));
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+}
+
+.phone-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 8px 15px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.phone-link:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Liste des modes de paiement */
+.payment-info {
+    border-left: 4px solid var(--green-healing);
+}
+
+.payment-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.payment-list li {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+body.light-mode .payment-list li {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .payment-list {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .phone-link {
+        font-size: 1.1rem;
+        width: 100%;
+        text-align: center;
+    }
+}
