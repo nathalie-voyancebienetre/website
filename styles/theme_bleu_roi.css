@@ -1378,3 +1378,54 @@ body.light-mode #diplomes .gallery-item::after {
         font-size: 1.5rem;
     }
 }
+
+/* ============================================
+   PHOTO DE PROFIL
+   ============================================ */
+.profile-photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 40px;
+}
+
+.profile-photo {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent);
+    box-shadow: var(--shadow-glow);
+    transition: all 0.4s ease;
+    animation: pulse-glow 3s infinite;
+}
+
+.profile-photo:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.6);
+}
+
+/* Mode clair */
+body.light-mode .profile-photo {
+    border-color: var(--accent-light);
+    box-shadow: 0 0 20px rgba(29, 78, 216, 0.3);
+}
+
+body.light-mode .profile-photo:hover {
+    box-shadow: 0 0 30px rgba(29, 78, 216, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-photo {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-photo {
+        width: 180px;
+        height: 180px;
+    }
+}
