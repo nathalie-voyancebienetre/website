@@ -89,6 +89,11 @@
       "filename": "assets/atelier/protection.png",
       "category": "ateliers",
       "caption": " ateliers"
+    },
+    {
+      "filename": "assets/atelier/question.png",
+      "category": "ateliers",
+      "caption": " ateliers"
     }
   ],
   "categories": ["tous", "voyance", "meditation", "energie", "ateliers"],
