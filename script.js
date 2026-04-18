@@ -284,19 +284,7 @@ function updateGalleryInfo() {
     if (currentCategory !== 'tous') {
         filteredPhotos = galleryData.photos.filter(photo => photo.category === currentCategory);
     }
-    
-    const totalPhotos = filteredPhotos.length;
-    const displayedCount = document.querySelectorAll('.gallery-item').length;
-    
-    let infoText = displayedCount + ' photo' + (displayedCount > 1 ? 's' : '') + ' affichée' + (displayedCount > 1 ? 's' : '');
-    
-    if (displayedCount < totalPhotos) {
-        infoText += ' sur ' + totalPhotos + ' totale' + (totalPhotos > 1 ? 's' : '');
-    } else if (totalPhotos > 0) {
-        infoText += ' (' + totalPhotos + ' au total)';
-    }
-    
-    info.textContent = infoText;
+
 }
 
 // ============================================
@@ -318,7 +306,7 @@ async function loadDiplomas() {
                 'alt="Diplôme ' + (index + 1) + '" ' +
                 'loading="lazy" class="gallery-img">' +
                 '<div class="overlay" aria-hidden="true">' +
-                '<span class="overlay-text">📜</span>' +
+                '<span class="overlay-text"></span>' +
                 '</div>';
             grid.appendChild(item);
         });
