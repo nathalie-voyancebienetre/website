@@ -1,6 +1,11 @@
 {
   "photos": [
     {
+      "filename": "assets/voyance/image_livres.jpg",
+      "category": "voyance",
+      "caption": "voyance"
+    },
+    {
       "filename": "assets/voyance/image_tarot.jpg",
       "category": "voyance",
       "caption": "voyance"
@@ -40,15 +45,25 @@
       "category": "energie",
       "caption": "energie"
     },
+        {
+      "filename": "assets/energie/image_magnetisme.png",
+      "category": "energie",
+      "caption": "energie"
+    },
     {
-      "filename": "assets/atelier/image_livres.jpg",
-      "category": "ateliers",
-      "caption": "ateliers"
+      "filename": "assets/energie/image_soin-energetique.png",
+      "category": "energie",
+      "caption": "energie"
     },
     {
       "filename": "assets/meditation/image_meditation.jpg",
       "category": "meditation",
       "caption": "meditation"
+    }
+        {
+      "filename": "assets/atelier/image_pendules2.jpg",
+      "category": "ateliers",
+      "caption": " ateliers"
     }
 
 
