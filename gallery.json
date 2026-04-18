@@ -59,8 +59,23 @@
       "filename": "assets/meditation/image_meditation.jpg",
       "category": "meditation",
       "caption": "meditation"
-    }
-        {
+    },
+    {
+      "filename": "assets/meditation/image_meditation1.jpg",
+      "category": "meditation",
+      "caption": "meditation"
+    },
+    {
+      "filename": "assets/meditation/image_meditation2.jpg",
+      "category": "meditation",
+      "caption": "meditation"
+    },
+    {
+      "filename": "assets/meditation/image_meditation3.jpg",
+      "category": "meditation",
+      "caption": "meditation"
+    },    
+    {
       "filename": "assets/atelier/image_pendules2.jpg",
       "category": "ateliers",
       "caption": " ateliers"
