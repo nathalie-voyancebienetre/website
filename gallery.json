@@ -78,17 +78,17 @@
     {
       "filename": "assets/atelier/formation_magnetisme.png",
       "category": "ateliers",
-      "caption": " ateliers"
+      "caption": " Formation magnétisme"
     },
     {
       "filename": "assets/atelier/question.png",
       "category": "ateliers",
-      "caption": " ateliers"
+      "caption": "Question sur son avancé spirituelle ?"
     },
     {
       "filename": "assets/atelier/protection.png",
       "category": "ateliers",
-      "caption": " ateliers"
+      "caption": " Comment bien se protéger"
     }
   ],
   "categories": ["tous", "voyance", "meditation", "energie", "ateliers"],
