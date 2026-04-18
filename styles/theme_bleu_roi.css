@@ -1298,3 +1298,83 @@ body.light-mode #diplomes .gallery-item::after {
         padding: 15px 12px 12px;
     }
 }
+
+
+/* ============================================
+   SECTION CONTACT - INFOS
+   ============================================ */
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-light);
+    box-shadow: 0 5px 20px rgba(37, 99, 235, 0.15);
+}
+
+.contact-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.contact-details strong {
+    color: var(--accent-light);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.contact-details p,
+.contact-details a {
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.contact-details a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-details a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
+}
+
+.map-container {
+    margin-top: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+@media (max-width: 768px) {
+    .contact-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .contact-item {
+        padding: 15px;
+    }
+    
+    .contact-icon {
+        font-size: 1.5rem;
+    }
+}
