@@ -56,11 +56,6 @@
       "caption": "energie"
     },
     {
-      "filename": "assets/meditation/image_meditation.jpg",
-      "category": "meditation",
-      "caption": "meditation"
-    },
-    {
       "filename": "assets/meditation/image_meditation1.png",
       "category": "meditation",
       "caption": "meditation"
@@ -79,9 +74,22 @@
       "filename": "assets/atelier/image_pendules2.jpg",
       "category": "ateliers",
       "caption": " ateliers"
+    },
+    {
+      "filename": "assets/atelier/formation_magnetisme.png",
+      "category": "ateliers",
+      "caption": " ateliers"
+    },
+    {
+      "filename": "assets/atelier/question.png",
+      "category": "ateliers",
+      "caption": " ateliers"
+    },
+    {
+      "filename": "assets/atelier/protection.png",
+      "category": "ateliers",
+      "caption": " ateliers"
     }
-
-
   ],
   "categories": ["tous", "voyance", "meditation", "energie", "ateliers"],
   "photosPerPage": 6
