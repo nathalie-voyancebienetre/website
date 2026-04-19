@@ -1533,3 +1533,54 @@ body.light-mode .payment-list li {
         align-items: center;
     }
 }
+
+
+/* ============================================
+   PAGES LÉGALES - STYLES SPÉCIFIQUES
+   ============================================ */
+.container h3 {
+    color: var(--accent);
+    margin-top: 35px;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+.container h4 {
+    color: var(--text-primary);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.container ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.container li {
+    margin-bottom: 8px;
+}
+
+.container a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.container a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .container h3 {
+        font-size: 1.2rem;
+    }
+    
+    .container h4 {
+        font-size: 1rem;
+    }
+}
