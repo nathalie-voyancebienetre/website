@@ -1500,3 +1500,36 @@ body.light-mode .payment-list li {
         text-align: center;
     }
 }
+
+/* ============================================
+   LIENS LÉGAUX FOOTER
+   ============================================ */
+.legal-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.legal-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+}
+
+.legal-links a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .legal-links {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+}
