@@ -94,8 +94,18 @@
       "filename": "assets/Diplomes/radiesthesie.png",
       "category": "ateliers",
       "caption": "Diplôme radiesthésie"
+    },
+    {
+      "filename": "assets/sophrologie/sophrologie1.jpg",
+      "category": "sophrologie",
+      "caption": "sophrologie"
+    },
+    {
+      "filename": "assets/sophrologie/sophrologie2.jpg",
+      "category": "sophrologie",
+      "caption": "sophrologie"
     }
   ],
-  "categories": ["tous", "voyance", "meditation", "energie", "ateliers"],
+  "categories": ["tous", "voyance", "meditation", "energie", "ateliers","sophrologie"],
   "photosPerPage": 6
 }
