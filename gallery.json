@@ -56,6 +56,16 @@
       "caption": "energie"
     },
     {
+      "filename": "assets/energie/image_seance_1.jpeg",
+      "category": "energie",
+      "caption": "Seance de magnetisme et de soin énergétique"
+    },
+    {
+      "filename": "assets/energie/image_seance_2.jpeg",
+      "category": "energie",
+      "caption": "Seance de magnetisme et de soin énergétique"
+    },
+    {
       "filename": "assets/meditation/image_meditation1.png",
       "category": "meditation",
       "caption": "meditation"
@@ -69,7 +79,12 @@
       "filename": "assets/meditation/image_meditation3.png",
       "category": "meditation",
       "caption": "meditation"
-    },    
+    },
+    {
+      "filename": "assets/meditation/image_seance_meditation.jpeg",
+      "category": "meditation",
+      "caption": "Seances de méditation"
+    },   
     {
       "filename": "assets/atelier/image_pendules2.jpg",
       "category": "ateliers",
