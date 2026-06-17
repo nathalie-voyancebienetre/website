@@ -293,31 +293,146 @@ function updateGalleryInfo() {
 // ============================================
 // CHARGEMENT DES DIPLÔMES
 // ============================================
+let currentPageDiplomas = 1;
+const diplomasPerPage = 6;
+
 async function loadDiplomas() {
     try {
         const response = await fetch('diplomes.json');
         const data = await response.json();
+        
+        // Sauvegarde les données globales pour pagination
+        window.diplomasData = data.diplomas || [];
+        
         const grid = document.getElementById('diplomes-grid');
         if(!grid) return;
         
         grid.innerHTML = '';
-        data.diplomas.forEach((filename, index) => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.innerHTML = 
-                '<img src="assets/Diplomes/' + filename + '" ' +
-                'alt="Diplôme ' + (index + 1) + '" ' +
-                'loading="lazy" class="gallery-img">' +
-                '<div class="overlay" aria-hidden="true">' +
-                '<span class="overlay-text"></span>' +
-                '</div>';
-            grid.appendChild(item);
-        });
+        renderDiplomas();
+        updateDiplomasInfo();
         
-        setupLightbox();
     } catch (error) {
         console.warn('Diplômes non configurés:', error);
+        const grid = document.getElementById('diplomes-grid');
+        if(grid) {
+            grid.innerHTML = '<p class="no-photos">Aucun diplôme disponible.</p>';
+        }
     }
+}
+
+// ============================================
+// AFFICHAGE DES DIPLÔMES (AVEC PAGINATION)
+// ============================================
+function renderDiplomas() {
+    const grid = document.getElementById('diplomes-grid');
+    grid.innerHTML = '';
+    
+    if (!window.diplomasData || window.diplomasData.length === 0) {
+        grid.innerHTML = '<p class="no-photos">Aucun diplôme disponible.</p>';
+        removeDiplomasLoadMoreButton();
+        return;
+    }
+    
+    const startIndex = 0;
+    const endIndex = Math.min(currentPageDiplomas * diplomasPerPage, window.diplomasData.length);
+    const diplomasToShow = window.diplomasData.slice(startIndex, endIndex);
+    
+    diplomasToShow.forEach((filename, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item fade-in';
+        
+        item.innerHTML = 
+            '<img src="assets/Diplomes/' + filename + '" ' +
+            'alt="Diplôme ' + (index + 1) + '" ' +
+            'loading="lazy" class="gallery-img">' +
+            '<div class="overlay" aria-hidden="true">' +
+            '<span class="overlay-text"></span></div>' +
+            '<div class="photo-caption">Certification &nbsp;</div>';
+        
+        grid.appendChild(item);
+    });
+    
+    setupLightbox();
+    
+    // Afficher ou retirer le bouton "Voir plus"
+    if (endIndex < window.diplomasData.length) {
+        renderDiplomasLoadMoreButton();
+    } else {
+        removeDiplomasLoadMoreButton();
+    }
+}
+
+// ============================================
+// BOUTON "VOIR PLUS" POUR DIPLÔMES
+// ============================================
+function renderDiplomasLoadMoreButton() {
+    removeDiplomasLoadMoreButton();
+    
+    const grid = document.getElementById('diplomes-grid');
+    const container = document.createElement('div');
+    container.className = 'load-more-container';
+    
+    const currentDisplayed = grid.querySelectorAll('.gallery-item').length;
+    const remaining = window.diplomasData.length - currentDisplayed;
+    
+    if (remaining > 0) {
+        const btnText = '+';
+        const btnCount = 'Voir ' + remaining + ' autre' + (remaining > 1 ? 's' : '');
+        
+        container.innerHTML = 
+            '<button id="load-more-diplomas-btn" class="load-more-btn">' +
+            '<span class="btn-text">' + btnText + '</span>' +
+            '<span class="btn-count">' + btnCount + '</span>' +
+            '</button>';
+        
+        grid.parentNode.insertBefore(container, grid.nextSibling);
+        
+        const loadMoreBtn = document.getElementById('load-more-diplomas-btn');
+        loadMoreBtn.addEventListener('click', () => {
+            loadMoreBtn.classList.add('loading');
+            loadMoreBtn.querySelector('.btn-text').textContent = '...';
+            
+            setTimeout(() => {
+                currentPageDiplomas++;
+                loadMoreBtn.classList.remove('loading');
+                renderDiplomas();
+                updateDiplomasInfo();
+            }, 300);
+        });
+    }
+}
+
+function removeDiplomasLoadMoreButton() {
+    const existingBtn = document.getElementById('load-more-diplomas-btn');
+    if (existingBtn) {
+        existingBtn.parentElement.remove();
+    }
+}
+
+// ============================================
+// MISE À JOUR DES INFOS DIPLÔMES
+// ============================================
+function updateDiplomasInfo() {
+    let info = document.getElementById('diplomes-info');
+    if (!info) {
+        info = document.createElement('p');
+        info.id = 'diplomes-info';
+        info.className = 'gallery-info';
+        const diplomesSection = document.getElementById('diplomes');
+        if(diplomesSection) {
+            // Insérer après le titre h2
+            const h2 = diplomesSection.querySelector('h2');
+            if(h2) h2.parentNode.insertBefore(info, h2.nextSibling);
+        }
+    }
+    
+    if (!window.diplomasData) {
+        info.textContent = '';
+        return;
+    }
+
+    const displayed = Math.min(currentPageDiplomas * diplomasPerPage, window.diplomasData.length);
+    info.textContent = `${displayed} / ${window.diplomasData.length} diplômes affichés`;
 }
 
 // ============================================
