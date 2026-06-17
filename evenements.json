@@ -2,13 +2,13 @@
     "photos": [
         {
             "filename": "assets/evenements/event1.jpg",
-            "alt": "Atelier méditation - Nathalie Voyance",
-            "caption": "Atelier méditation de groupe"
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Vitry en Artois- Bien-Etre et Voyance"
         },
         {
             "filename": "assets/evenements/event2.jpg",
-            "alt": "Rencontre magnétisme - Nathalie Voyance",
-            "caption": "Séance collective"
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Villeneuve d'Asq - Bien-Etre, Voyance, Mediumnité"
         }
     ]
 }
