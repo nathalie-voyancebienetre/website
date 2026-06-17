@@ -1,0 +1,14 @@
+{
+    "photos": [
+        {
+            "filename": "assets/evenements/event1.jpg",
+            "alt": "Atelier méditation - Nathalie Voyance",
+            "caption": "Atelier méditation de groupe"
+        },
+        {
+            "filename": "assets/evenements/event2.jpg",
+            "alt": "Rencontre magnétisme - Nathalie Voyance",
+            "caption": "Séance collective"
+        }
+    ]
+}

@@ -1331,6 +1331,12 @@ body.light-mode #diplomes .gallery-item::after {
     }
 }
 
+.event-photo-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
 
 /* ============================================
    SECTION CONTACT - INFOS

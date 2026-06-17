@@ -318,6 +318,54 @@ async function loadDiplomas() {
 }
 
 // ============================================
+// CHARGEMENT DES ÉVÉNEMENTS
+// ============================================
+async function loadEvents() {
+    try {
+        const response = await fetch('evenements.json');
+        const data = await response.json();
+        const container = document.getElementById('evenements-grid');
+        
+        if(!container) return;
+        
+        container.innerHTML = '';
+        
+        if (!data.photos || data.photos.length === 0) {
+            container.innerHTML = '<p class="no-photos">Aucun événement prévu pour le moment.</p>';
+            return;
+        }
+        
+        data.photos.forEach((photo, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item fade-in';
+            
+            // Optionnel : limiter le nombre d'images affichées si beaucoup
+            // const maxDisplay = 6;
+            // if (index >= maxDisplay) return;
+            
+            item.innerHTML = 
+                '<img src="' + photo.filename + '" ' +
+                'alt="' + photo.alt + '" ' +
+                'loading="lazy" class="gallery-img">' +
+                (photo.caption ? 
+                    '<div class="overlay"><span class="overlay-text"></span></div>' +
+                    '<div class="photo-caption">' + photo.caption + '</div>' : '');
+            
+            container.appendChild(item);
+        });
+        
+        setupLightbox();
+        
+    } catch (error) {
+        console.warn('Événements non configurés:', error);
+        const container = document.getElementById('evenements-grid');
+        if(container) {
+            container.innerHTML = '<p class="no-photos">En cours de préparation...</p>';
+        }
+    }
+}
+
+// ============================================
 // LIGHTBOX
 // ============================================
 function setupLightbox() {
