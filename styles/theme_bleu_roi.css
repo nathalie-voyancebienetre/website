@@ -1299,6 +1299,38 @@ body.light-mode #diplomes .gallery-item::after {
     }
 }
 
+/* ============================================
+   SECTION EVENEMENTS - IMAGE CLIQUABLE
+   ============================================ */
+#evenements .gallery-item {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#evenements .gallery-img {
+    width: 100%;
+    max-width: 600px; /* Limite la largeur pour ne pas être trop grand */
+    height: auto;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    box-shadow: var(--shadow);
+    object-fit: cover;
+}
+
+#evenements .gallery-img:hover {
+    transform: scale(1.03);
+    border-color: var(--accent-light);
+    box-shadow: var(--shadow-glow);
+}
+
+@media (max-width: 768px) {
+    #evenements .gallery-img {
+        max-width: 100%;
+    }
+}
+
 
 /* ============================================
    SECTION CONTACT - INFOS
