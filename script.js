@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Charger les diplômes
     loadDiplomas();
+
+    // Charger les événements
+    loadEvents();
     
     // Bouton retour en haut
     const backToTopBtn = document.getElementById('back-to-top');
