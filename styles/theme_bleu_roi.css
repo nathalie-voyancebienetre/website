@@ -1622,3 +1622,98 @@ body.light-mode .payment-list li {
         font-size: 1rem;
     }
 }
+
+/* ============================================
+   BANNIÈRE EN DIRECT (LIVE BANNER)
+   ============================================ */
+.live-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(37, 99, 235, 0.1));
+    border: 2px solid #EF4444; /* Rouge vif pour le direct */
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin: 30px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
+    transition: all 0.4s ease;
+}
+
+/* État caché par défaut */
+.live-banner.hidden {
+    display: none;
+}
+
+/* Indicateur visuel */
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    color: #EF4444;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1rem;
+}
+
+/* Point rouge animé (Pulse) */
+.live-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #EF4444;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+}
+
+.pulse {
+    animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Bouton Regarder le Live */
+.live-btn {
+    display: inline-flex;
+    align-items: center;
+    background: #EF4444;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.live-btn:hover {
+    background: #DC2626;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+}
+
+@media (max-width: 768px) {
+    .live-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .live-indicator {
+        justify-content: center;
+    }
+    
+    .live-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
