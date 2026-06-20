@@ -1717,3 +1717,80 @@ body.light-mode .payment-list li {
         justify-content: center;
     }
 }
+
+
+/* ============================================
+   INFO SALONS - ALIGNEMENT GAUCHE
+   ============================================ */
+.left-align-notice {
+    display: flex;
+    align-items: flex-start; /* Aligne l'icône en haut avec le texte */
+    gap: 15px;
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 700px; /* Limite la largeur pour ne pas être trop large */
+    margin: 30px 0 40px 0; /* Marge haute/basse, marge gauche 0 (colinéaire avec le texte) */
+    
+    /* Style Glassmorphism subtile */
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 4px solid var(--accent); /* Bordure solide bleue à gauche */
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid transparent;
+    border-radius: 0 12px 12px 0; /* Arrondi seulement à droite */
+    
+    padding: 20px 20px 20px 10px; /* Padding réduit à gauche pour serer contre la bordure */
+    box-shadow: none; /* Pas d'ombre portée massive, juste une légère définition */
+    transition: all 0.3s ease;
+}
+
+/* Effet au survol */
+.left-align-notice:hover {
+    background: rgba(37, 99, 235, 0.08);
+    transform: translateX(5px); /* Légère animation vers la droite */
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
+}
+
+.notice-icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: -2px; /* Ajustement fin vertical */
+}
+
+.notice-content strong {
+    color: var(--accent);
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    display: block;
+    font-family: 'Cormorant Garamond', serif; /* Pour rester élégant */
+    font-weight: 600;
+}
+
+.notice-content p {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.notice-content small {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-style: italic;
+    display: block;
+}
+
+/* Responsive Mobile : Centrer sur petit écran si besoin, ou garder à gauche */
+@media (max-width: 768px) {
+    .left-align-notice {
+        max-width: 100%;
+        margin: 25px 0 35px 0;
+        border-radius: 12px; /* Reprend des coins arrondis partout sur mobile */
+        border-left: 3px solid var(--accent);
+        padding: 15px;
+    }
+    
+    .left-align-notice:hover {
+        transform: none; /* Pas de mouvement sur mobile */
+    }
+}
