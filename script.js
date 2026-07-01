@@ -525,3 +525,22 @@ function setupLightbox() {
         }
     });
 }
+
+// === Bandeau YouTube fermable ===
+(function () {
+    const banner = document.getElementById('yt-banner');
+    const closeBtn = document.getElementById('close-yt-banner');
+
+    if (!banner || !closeBtn) return;
+
+    // Masqué si déjà fermé pendant cette session
+    if (sessionStorage.getItem('yt-banner-closed') === 'true') {
+        banner.classList.add('hidden');
+        return;
+    }
+
+    closeBtn.addEventListener('click', function () {
+        banner.classList.add('hidden');
+        sessionStorage.setItem('yt-banner-closed', 'true');
+    });
+})();
