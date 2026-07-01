@@ -19,7 +19,15 @@
 </head>
 <body>
 
-
+<!-- Bandeau rouge YouTube -->
+<div id="yt-banner" class="yt-promo-banner">
+    <a href="https://www.youtube.com/@NathalieVoyanceBienEtre" target="_blank" rel="noopener noreferrer" class="yt-banner-link">
+        <span class="yt-icon">▶</span>
+        <span class="yt-banner-text">Retrouvez-moi en direct sur YouTube & Facebook — 2ᵉ mercredi du mois à 18h&nbsp;!</span>
+    </a>
+    <button id="close-yt-banner" class="yt-banner-close" aria-label="Fermer le bandeau">&times;</button>
+</div>
+    
     <header class="hero-header">
         <div class="header-overlay"></div>
         <div class="header-content">
@@ -337,56 +345,6 @@
                 </div>
             </div>
         </section>
-
-        
-        <!-- Section Lives -->
-        <section id="lives" class="container glass-effect">
-            <h2>🔴 Lives & Rencontres en Direct</h2>
-            <p class="lead-text">Rejoignez-nous en direct sur StreamYard !</p>
-            
-            <!-- BANNIÈRE DYNAMIQUE "EN DIRECT" -->
-            
-            <div id="live-banner" class="live-banner hidden">
-                <div class="live-indicator">
-                    <span class="live-dot pulse"></span>
-                    <span class="live-text">EN DIRECT MAINTENANT !</span>
-                </div>
-                <a href="https://streamyard.com/7293xf5qgi" target="_blank" class="live-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px; vertical-align:text-bottom;">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                    Regarder le Live
-                </a>
-                <button id="close-live-banner" aria-label="Fermer le banner" style="border:none;background:none;font-size:1.5rem;color:var(--text-secondary);cursor:pointer;margin-left:15px;">&times;</button>
-            </div>
-
-            <!-- Programme des prochains lives (Toujours visible) -->
-            <div class="schedule-grid">
-                <div class="schedule-card">
-                    <div class="schedule-icon">📺</div>
-                    <h3>YouTube, Facebook</h3>
-                    <p class="schedule-time">Le 2eme Mercredi de chaque mois à 18h00</p>
-                    <p class="schedule-desc">Vous me posez une question de votre choix.</p>
-                    <a href="https://www.youtube.com/@NathalieVoyanceBienEtre" target="_blank" class="btn-modern btn-small">Voir la chaîne</a>
-                </div>
-            </div>
-
-            <!-- Info Box -->
-            <div class="info-box">
-                <p><strong>Comment regarder ?</strong> Cliquez sur le bouton ci-dessus lorsque nous sommes en direct. Le lien vous permet d'interagir dans le chat !</p>
-            </div>
-        </section>
-
-
-        <section id="evenements" class="container glass-effect">
-            <h2>Évènements</h2>
-            <!-- <p>Calendrier des prochains ateliers et rencontres.</p> -->
-            <div class="event-photo-container" id="evenements-grid">
-                <!-- Les images seront injectées ici par JavaScript -->
-                <p class="no-photos">Chargement en cours...</p>
-            </div>
-        </section>
-
 
         <section id="contact" class="container glass-effect">
             <h2>Contact</h2>
