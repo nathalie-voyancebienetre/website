@@ -1,6 +1,11 @@
 {
     "photos": [
         {
+            "filename": "assets/evenements/event3.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Villeneuve d'Asq - Bien-Etre, Voyance, Mediumnité"
+        }
+        {
             "filename": "assets/evenements/event1.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Vitry en Artois- Bien-Etre et Voyance"
@@ -10,10 +15,6 @@
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Vitry en Artois- Bien-Etre et Voyance"
         },
-        {
-            "filename": "assets/evenements/event3.jpg",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Villeneuve d'Asq - Bien-Etre, Voyance, Mediumnité"
-        }
+
     ]
 }
