@@ -82,38 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Formulaire de contact
-    const contactForm = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    const formStatus = document.getElementById('form-status');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Envoi en cours...';
-            formStatus.textContent = '';
-            
-            try {
-                const formData = {
-                    nom: document.getElementById('nom').value,
-                    email: document.getElementById('email').value,
-                    message: document.getElementById('message').value
-                };
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formData, EMAILJS_PUBLIC_KEY);
-                formStatus.textContent = '✅ Message envoyé avec succès !';
-                formStatus.style.color = '#10B981';
-                contactForm.reset();
-            } catch (error) {
-                console.error('Erreur d\'envoi:', error);
-                formStatus.textContent = '❌ Erreur lors de l\'envoi.';
-                formStatus.style.color = '#EF4444';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Envoyer';
-            }
-        });
-    }
 });
 
 // ============================================
