@@ -544,3 +544,136 @@ function setupLightbox() {
         sessionStorage.setItem('yt-banner-closed', 'true');
     });
 })();
+
+
+// ========================
+// GESTION DES TÉMOIGNAGES
+// ========================
+let testimonialsData = [];
+let testimonialsDisplayed = 0;
+let currentCategory = 'all';
+const testimonialsPerPage = 3;
+
+async function loadTestimonials() {
+    try {
+        const response = await fetch('testimonials.json');
+        
+        if (!response.ok) {
+            throw new Error(`Erreur HTTP: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        testimonialsData = data.testimonials || [];
+        
+        console.log(`${testimonialsData.length} témoignages chargés`);
+        filterAndDisplayTestimonials();
+    } catch (error) {
+        console.error('Erreur lors du chargement des témoignages:', error);
+        
+        const grid = document.getElementById('testimonials-grid');
+        const info = document.getElementById('testimonials-info');
+        
+        if (grid) {
+            grid.innerHTML = '<p class="no-photos">Impossible de charger les témoignages. Veuillez réessayer plus tard.</p>';
+        }
+        
+        if (info) {
+            info.textContent = 'Erreur de chargement';
+        }
+    }
+}
+
+function filterAndDisplayTestimonials() {
+    if (testimonialsData.length === 0) return;
+    
+    const grid = document.getElementById('testimonials-grid');
+    const info = document.getElementById('testimonials-info');
+    const countSpan = document.getElementById('testimonials-available-count');
+    const loadMoreBtn = document.querySelector('#testimonials-load-more .load-more-btn');
+    
+    // Filtrer les témoignages
+    const filteredTestimonials = currentCategory === 'all' 
+        ? testimonialsData 
+        : testimonialsData.filter(t => t.category === currentCategory);
+    
+    // Calculer combien afficher
+    const toShow = Math.min(testimonialsDisplayed + testimonialsPerPage, filteredTestimonials.length);
+    const remaining = filteredTestimonials.length - toShow;
+    
+    // Afficher les témoignages
+    grid.innerHTML = filteredTestimonials.slice(0, toShow).map(t => createTestimonialCard(t)).join('');
+    
+    // Mettre à jour l'info
+    if (filteredTestimonials.length === 0) {
+        info.textContent = 'Aucun témoignage disponible dans cette catégorie.';
+        document.getElementById('testimonials-load-more').style.display = 'none';
+    } else {
+        info.textContent = `${toShow} témoignage${toShow > 1 ? 's' : ''} affiché${toShow > 1 ? 's' : ''}`;
+        document.getElementById('testimonials-load-more').style.display = 'flex';
+        
+        if (remaining > 0) {
+            countSpan.textContent = `( ${remaining} de plus )`;
+            countSpan.style.display = 'inline';
+            loadMoreBtn.querySelector('span:first-child').textContent = 'Charger plus';
+        } else {
+            countSpan.style.display = 'none';
+            loadMoreBtn.querySelector('span:first-child').textContent = 'Plus de témoignages';
+        }
+    }
+    
+    // Animation fade-in
+    setTimeout(() => {
+        grid.querySelectorAll('.testimonial-card').forEach(card => card.classList.add('fade-in'));
+    }, 100);
+}
+
+function createTestimonialCard(testimonial) {
+    return `
+        <div class="testimonial-card" data-category="${testimonial.category}">
+            <div class="quote-icon">"</div>
+            <p class="testimonial-text">${escapeHtml(testimonial.text)}</p>
+            <div class="testimonial-author">
+                <span class="author-name">${escapeHtml(testimonial.author)}</span>
+                <span class="author-location">${escapeHtml(testimonial.location)}</span>
+            </div>
+        </div>
+    `;
+}
+
+// Sécurisation XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Événementiel: filtrage des témoignages
+document.addEventListener('DOMContentLoaded', () => {
+    loadTestimonials();
+    
+    document.querySelectorAll('#temoignages .filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Gestion des classes actives
+            document.querySelectorAll('#temoignages .filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Mise à jour du filtre
+            currentCategory = this.dataset.category;
+            testimonialsDisplayed = 0;
+            
+            // Réinitialiser le bouton Charger Plus
+            const loadMoreBtn = document.querySelector('#testimonials-load-more .load-more-btn');
+            const countSpan = document.getElementById('testimonials-available-count');
+            if (loadMoreBtn) loadMoreBtn.querySelector('span:first-child').textContent = 'Charger plus';
+            if (countSpan) countSpan.style.display = 'inline';
+            
+            // Recharger les témoignages
+            filterAndDisplayTestimonials();
+        });
+    });
+    
+    // Chargement de plus de témoignages
+    document.getElementById('testimonials-load-more')?.addEventListener('click', function() {
+        filterAndDisplayTestimonials();
+    });
+});
