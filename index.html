@@ -325,24 +325,31 @@
 
         <section id="temoignages" class="container glass-effect">
             <h2>Témoignages</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">Les séances de méditation m'ont permis de retrouver une paix intérieure que je pensais avoir perdue. Nathalie est une guide très empathique et professionnelle.</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">Pascal D.</span>
-                        <span class="author-location">Lille</span>
-                    </div>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="quote-icon">"</div>
-                    <p class="testimonial-text">Je suis venue voir Nathalie, en salon du bien-être, pour un contact au défunt avec mon fils, je l'ai retrouvé à travers elle, et tout ce qu'elle m'a retransmis m'a apaisé et j'ai pu retrouver mon fils un instant,</br> Merci Nathalie, je la recommande et je reviendrais afin de communiquer dès que mon coeur en a envie avec mon fils.</p>
-                    <div class="testimonial-author">
-                        <span class="author-name">Denise</span>
-                        <span class="author-location">Villeneuve d'Ascq</span>
-                    </div>
-                </div>
+            
+            <!-- Filtres de catégories -->
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-category="all">Tous</button>
+                <button class="filter-btn" data-category="voyance">Voyance</button>
+                <button class="filter-btn" data-category="defunts">Contact aux défunts</button>
+                <button class="filter-btn" data-category="magnetisme">Magnétisme</button>
+                <button class="filter-btn" data-category="formations">Formations</button>
+                <button class="filter-btn" data-category="sophrologie">Sophrologie</button>
+            </div>
+            
+            <div class="testimonials-grid" id="testimonials-grid"></div>
+            
+            <!-- Indicateur de résultat -->
+            <p class="gallery-info" id="testimonials-info"></p>
+            
+            <!-- Bouton Charger Plus -->
+            <div class="load-more-container" id="testimonials-load-more">
+                <button class="load-more-btn">
+                    <span>Charger plus</span>
+                    <span class="btn-count" id="testimonials-available-count"></span>
+                    <svg class="btn-arrow" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                    </svg>
+                </button>
             </div>
         </section>
 
