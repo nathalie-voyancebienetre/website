@@ -1893,3 +1893,352 @@ body.light-mode .yt-promo-banner {
         font-size: 1.2rem;
     }
 }
+
+
+/* ============================================
+   SECTION TÉMOIGNAGES - THEME BLEU ROI + VERT
+   ============================================ */
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+}
+
+/* Carte de témoignage - Style glassmorphism cohérent */
+.testimonial-card {
+    background: linear-gradient(
+        145deg, 
+        rgba(51, 65, 85, 0.7), 
+        rgba(30, 41, 59, 0.6)
+    );
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 35px;
+    position: relative;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+body.light-mode .testimonial-card {
+    background: linear-gradient(
+        145deg, 
+        rgba(255, 255, 255, 0.95), 
+        rgba(226, 232, 240, 0.9)
+    );
+}
+
+/* Barre décorative en haut (comme les cartes services) */
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--green-healing));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.testimonial-card:hover::before {
+    opacity: 1;
+}
+
+/* Effet hover cohérent avec le reste du site */
+.testimonial-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);
+    border-color: var(--accent-light);
+}
+
+/* Icône guillemet décorative */
+.quote-icon {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    color: var(--accent);
+    opacity: 0.12;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+body.light-mode .quote-icon {
+    opacity: 0.08;
+}
+
+/* Contenu du texte */
+.testimonial-content blockquote {
+    font-size: 1.02rem;
+    color: var(--text-primary);
+    margin-bottom: 25px;
+    padding-top: 20px;
+    font-style: italic;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-content blockquote::first-letter {
+    font-size: 1.8em;
+    color: var(--accent-light);
+    float: left;
+    margin-right: 8px;
+    margin-top: -5px;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* Métadonnées auteur */
+.testimonial-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+}
+
+.author-name {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body.light-mode .author-name {
+    color: var(--accent-light);
+}
+
+.author-service {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(37, 99, 235, 0.08);
+    border-radius: 15px;
+    font-size: 0.8rem;
+    align-self: flex-start;
+}
+
+body.light-mode .author-service {
+    background: rgba(29, 78, 216, 0.08);
+}
+
+/* Badge catégorie optionnel */
+.testimonial-category {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: white;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+}
+
+/* Filtres - Style cohérent avec galerie/diplômes */
+.gallery-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--text-secondary);
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(37, 99, 235, 0.1);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+/* Mode clair pour les filtres */
+body.light-mode .filter-btn {
+    border-color: var(--accent-light);
+}
+
+body.light-mode .filter-btn:hover {
+    background: rgba(29, 78, 216, 0.1);
+}
+
+/* Message "aucun témoignage" */
+.no-testimonials {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 1.05rem;
+    background: rgba(37, 99, 235, 0.03);
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    grid-column: 1 / -1;
+}
+
+body.light-mode .no-testimonials {
+    background: rgba(29, 78, 216, 0.03);
+}
+
+/* Information de comptage */
+#testimonials-info {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-top: 25px;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Bouton "Charger plus" - Style identique aux autres sections */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.load-more-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.load-more-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+}
+
+.load-more-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+.load-more-btn .btn-count {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+.load-more-btn .btn-arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.load-more-btn:hover .btn-arrow {
+    transform: translateY(3px);
+}
+
+/* Animation fade-in - Cohérente avec le reste */
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+    .testimonial-card {
+        padding: 25px;
+    }
+    
+    .testimonial-content blockquote {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+    
+    .filter-btn {
+        padding: 8px 18px;
+        font-size: 0.85rem;
+    }
+    
+    .load-more-btn {
+        padding: 12px 30px;
+        font-size: 0.95rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .quote-icon {
+        font-size: 3rem;
+        top: 10px;
+        right: 15px;
+    }
+    
+    .testimonial-category {
+        font-size: 0.7rem;
+        padding: 3px 10px;
+    }
+}
+
+/* Responsive tablette */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .testimonial-card {
+        padding: 30px;
+    }
+}
+
+/* Accessibilité */
+*:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.filter-btn:focus-visible,
+.load-more-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
