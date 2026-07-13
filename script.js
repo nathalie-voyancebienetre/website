@@ -515,3 +515,214 @@ function setupLightbox() {
 })();
 
 
+// ============================================
+// SECTION TÉMOIGNAGES - MODULE INDÉPENDANT
+// ============================================
+
+(function() {
+    // Évite les conflits avec d'autres instances
+    if (window.TemoignagesModule) return;
+    
+    // Configuration
+    const CONFIG = {
+        itemsPerPage: 6,
+        filterSelector: '.filter-btn[data-category]',
+        gridSelector: '#testimonials-grid',
+        infoSelector: '#testimonials-info',
+        loadMoreSelector: '#testimonials-load-more',
+        countSelector: '#testimonials-available-count',
+        dataFile: 'temoignages.json'
+    };
+
+    // État local du module
+    const state = {
+        data: null,
+        currentCategory: 'all',
+        currentPage: 1,
+        filteredTestimonials: []
+    };
+
+    // ============================================
+    // CHARGEMENT DES DONNÉES
+    // ============================================
+    async function loadTemoignages() {
+        try {
+            const response = await fetch(CONFIG.dataFile);
+            
+            if (!response.ok) throw new Error('Fichier non trouvé');
+            
+            state.data = await response.json();
+            
+            // Initialisation
+            initFilters();
+            applyFilter('all');
+            
+        } catch (error) {
+            console.warn('[Témoignages] Chargement échoué:', error);
+            displayError('Aucun témoignage disponible pour le moment.');
+        }
+    }
+
+    // ============================================
+    // INITIALISATION DES FILTRES
+    // ============================================
+    function initFilters() {
+        const filterButtons = document.querySelectorAll(CONFIG.filterSelector);
+        
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Mise à jour visuelle des boutons
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Application du filtre
+                applyFilter(category);
+            });
+        });
+    }
+
+    // ============================================
+    // APPLICATION DU FILTRE
+    // ============================================
+    function applyFilter(category) {
+        state.currentCategory = category;
+        state.currentPage = 1;
+        
+        // Filtrage des témoignages
+        if (category === 'all') {
+            state.filteredTestimonials = [...state.data.temoignages];
+        } else {
+            state.filteredTestimonials = state.data.temoignages.filter(
+                t => t.category === category
+            );
+        }
+        
+        // Affichage
+        renderTemoignages();
+        updateInfoText();
+        updateLoadMoreButton();
+    }
+
+    // ============================================
+    // RENDU DES TÉMOIGNAGES
+    // ============================================
+    function renderTemoignages() {
+        const grid = document.querySelector(CONFIG.gridSelector);
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+        
+        if (state.filteredTestimonials.length === 0) {
+            grid.innerHTML = '<p class="no-testimonials">Aucun témoignage dans cette catégorie.</p>';
+            return;
+        }
+        
+        const start = 0;
+        const end = Math.min(state.currentPage * CONFIG.itemsPerPage, state.filteredTestimonials.length);
+        const testimonialsToShow = state.filteredTestimonials.slice(start, end);
+        
+        testimonialsToShow.forEach((testimony, index) => {
+            const card = document.createElement('article');
+            card.className = 'testimonial-card fade-in';
+            card.setAttribute('aria-labelledby', `testimony-${index}-title`);
+            
+            card.innerHTML = `
+                <div class="testimonial-content">
+                    <blockquote>
+                        "${escapeHtml(testimony.text)}"
+                    </blockquote>
+                    <div class="testimonial-meta">
+                        <span class="testimonial-author">${escapeHtml(testimony.author)}</span>
+                        ${testimony.service ? `<span class="testimonial-service">${escapeHtml(testimony.service)}</span>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            grid.appendChild(card);
+        });
+    }
+
+    // ============================================
+    // BOUTON "CHARGER PLUS"
+    // ============================================
+    function updateLoadMoreButton() {
+        const container = document.querySelector(CONFIG.loadMoreSelector);
+        const countDisplay = document.querySelector(CONFIG.countSelector);
+        
+        if (!container || !countDisplay) return;
+        
+        const remaining = state.filteredTestimonials.length - (state.currentPage * CONFIG.itemsPerPage);
+        
+        if (remaining > 0) {
+            countDisplay.textContent = `${remaining} autre${remaining > 1 ? 's' : ''}`;
+            container.style.display = 'flex';
+        } else {
+            container.style.display = 'none';
+        }
+    }
+
+    // Attacher l'événement au bouton charger plus
+    document.addEventListener('DOMContentLoaded', () => {
+        const loadMoreBtn = document.querySelector('#testimonials-load-more button');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function() {
+                this.classList.add('loading');
+                
+                setTimeout(() => {
+                    state.currentPage++;
+                    renderTemoignages();
+                    updateInfoText();
+                    updateLoadMoreButton();
+                    this.classList.remove('loading');
+                }, 300);
+            });
+        }
+    });
+
+    // ============================================
+    // MISE À JOUR TEXTES D'INFO
+    // ============================================
+    function updateInfoText() {
+        const info = document.querySelector(CONFIG.infoSelector);
+        if (!info) return;
+        
+        const total = state.filteredTestimonials.length;
+        const displayed = Math.min(state.currentPage * CONFIG.itemsPerPage, total);
+        
+        info.textContent = `${displayed} / ${total} témoignages affichés`;
+    }
+
+    // ============================================
+    // FONCTIONS UTILITAIRES
+    // ============================================
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function displayError(message) {
+        const grid = document.querySelector(CONFIG.gridSelector);
+        if (grid) {
+            grid.innerHTML = `<p class="no-testimonials">${message}</p>`;
+        }
+    }
+
+    // ============================================
+    // INITIALISATION AUTOMATIQUE
+    // ============================================
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.querySelector('#temoignages')) {
+            loadTemoignages();
+        }
+    });
+
+    // Export public du module
+    window.TemoignagesModule = {
+        refresh: () => loadTemoignages(),
+        getCurrentState: () => ({ ...state })
+    };
+
+})();
