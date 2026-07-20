@@ -1,6 +1,16 @@
 {
     "photos": [
         {
+            "filename": "assets/evenements/event3.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": " Brouckerque - Zen Evenements"
+        },
+        {
+            "filename": "assets/evenements/event_septembre26.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": " Courrières - Salon du Bien Etre"
+        }
+        {
             "filename": "assets/evenements/event1.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Vitry en Artois- Bien-Etre et Voyance"
@@ -10,11 +20,6 @@
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Vitry en Artois- Bien-Etre et Voyance"
         },
-        {
-            "filename": "assets/evenements/event3.jpg",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": " Brouckerque - Zen Evenements"
-        }
-
+        
     ]
 }
