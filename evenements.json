@@ -1,6 +1,11 @@
 {
     "photos": [
         {
+            "filename": "assets/evenements/event_0915.png",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Séance Méditation"
+        },
+        {
             "filename": "assets/evenements/event3.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": " Brouckerque - Zen Evenements"
