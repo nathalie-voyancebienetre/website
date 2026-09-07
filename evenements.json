@@ -3,12 +3,12 @@
         {
             "filename": "assets/evenements/event3.jpg",
             "alt": "Nathalie VoyanceBienEtre",
-            "caption": " Brouckerque - Zen Evenements"
+            "caption": "Brouckerque - Zen Evenements"
         },
         {
             "filename": "assets/evenements/event_septembre26.jpg",
             "alt": "Nathalie VoyanceBienEtre",
-            "caption": " Courrières - Salon du Bien Etre"
+            "caption": "Courrières - Salon du Bien Etre"
         },
         {
             "filename": "assets/evenements/event1.png",
@@ -19,6 +19,11 @@
             "filename": "assets/evenements/event2.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Annezin - Bien-Etre et Voyance"
+        },    
+        {
+            "filename": "assets/evenements/event_1030.png",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Chateau de Grand Rullecourt - Les Nuits de la Voyance et des Arts divinatoires"
         }
         
     ]
