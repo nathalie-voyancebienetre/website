@@ -1,11 +1,6 @@
 {
     "photos": [
         {
-            "filename": "assets/evenements/event_0915.png",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Séance Méditation"
-        },
-        {
             "filename": "assets/evenements/event3.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": " Brouckerque - Zen Evenements"
@@ -29,7 +24,7 @@
             "filename": "assets/evenements/event_1030.png",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Chateau de Grand Rullecourt - Les Nuits de la Voyance et des Arts divinatoires"
-        },
+        }
         
     ]
 }
