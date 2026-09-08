@@ -21,10 +21,25 @@
             "caption": "Annezin - Bien-Etre et Voyance"
         },    
         {
+            "filename": "assets/evenements/event_1004.png",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Douai - Seance de Méditation"
+        },
+        {
             "filename": "assets/evenements/event_1030.png",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Chateau de Grand Rullecourt - Les Nuits de la Voyance et des Arts divinatoires"
-        }
+        },
+        {
+            "filename": "assets/evenements/event_1114.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Bully les Mines - Eclats de Lune"
+        },
+        {
+            "filename": "assets/evenements/event_1121.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Vitry en Artois - Duo avec Gérard Lengrand"
+        },
         
     ]
 }
