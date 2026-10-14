@@ -1,21 +1,6 @@
 {
     "photos": [
         {
-            "filename": "assets/evenements/event3.jpg",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Brouckerque - Zen Evenements"
-        },
-        {
-            "filename": "assets/evenements/event_septembre26.jpg",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Courrières - Salon du Bien Etre"
-        },
-        {
-            "filename": "assets/evenements/event1.png",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Arras - Bien-Etre et Voyance"
-        },
-        {
             "filename": "assets/evenements/event2.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Annezin - Bien-Etre et Voyance"
