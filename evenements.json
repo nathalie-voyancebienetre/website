@@ -1,24 +1,29 @@
 {
     "photos": [
         {
-            "filename": "assets/evenements/event_1030.png",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Chateau de Grand Rullecourt - Les Nuits de la Voyance et des Arts divinatoires"
-        },
-        {
-            "filename": "assets/evenements/event_1405.jpg",
-            "alt": "Nathalie VoyanceBienEtre",
-            "caption": "Bully les Mines - Eclats de Lune"
-        },
-        {
             "filename": "assets/evenements/event_1121.jpg",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Vitry en Artois - Duo avec Gérard Lengrand"
         },
         {
+            "filename": "assets/evenements/event_1212.png",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Douai - Formation Pendule"
+        },
+        {
             "filename": "assets/evenements/event_1601.png",
             "alt": "Nathalie VoyanceBienEtre",
             "caption": "Douai - Formation magnétisme"
+        },
+        {
+            "filename": "assets/evenements/event_0602.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Lievin - Salon"
+        },
+        {
+            "filename": "assets/evenements/event_2802.jpg",
+            "alt": "Nathalie VoyanceBienEtre",
+            "caption": "Maubeuge - Salon"
         }
         
     ]
